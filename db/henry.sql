@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 5.0.1
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 10, 2017 at 01:49 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.20
+-- Host: localhost
+-- Generation Time: Nov 17, 2020 at 08:34 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `godfrey_inventory`
+-- Database: `henry`
 --
 
 -- --------------------------------------------------------
@@ -37,8 +39,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`) VALUES
-(4, 'godfrey_mar@yahoo.com', 'admin'),
-(5, 'godfrey_mar@yahoo.com', 'admin');
+(4, 'godfrey_mar@yahoo.com', 'admin');
 
 -- --------------------------------------------------------
 
@@ -62,8 +63,8 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `description`, `photo`, `price`, `on_hand`, `demand`, `on_ordered`) VALUES
-(6, 'asdsad', 'hehehe', '18311.png', 2000, 30, 10, 10),
-(7, 'casio', 'for girls', '5209.jpg', 5000, 10, 40, 50);
+(6, 'asdsad', 'hehehe', '18311.png', 2000, 15, 25, 10),
+(7, 'casio', 'for girls', '5209.jpg', 5000, 4, 46, 50);
 
 -- --------------------------------------------------------
 
@@ -103,18 +104,17 @@ CREATE TABLE `sales_orders` (
   `datee` text NOT NULL,
   `customer` text NOT NULL,
   `num` int(15) NOT NULL,
-  `total_price` int(15) NOT NULL
+  `total_price` int(15) NOT NULL,
+  `datas` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sales_orders`
 --
 
-INSERT INTO `sales_orders` (`id`, `datee`, `customer`, `num`, `total_price`) VALUES
-(9, '7 December, 2017', 'marrielle', 1, 250000),
-(10, '8 December, 2017', 'asdsad', 1, 200000),
-(11, '10 December, 2017', 'Mar alcantara', 1, 20000),
-(12, '10 December, 2017', 'wews', 1, 200000);
+INSERT INTO `sales_orders` (`id`, `datee`, `customer`, `num`, `total_price`, `datas`) VALUES
+(14, '17 November, 2020', 'Sample user', 2, 7000, '6,1,7,1'),
+(15, '17 November, 2020', 'James Reid', 1, 8000, '6,4');
 
 -- --------------------------------------------------------
 
@@ -181,26 +181,32 @@ ALTER TABLE `suppliers`
 --
 ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 --
 -- AUTO_INCREMENT for table `purchase_orders`
 --
 ALTER TABLE `purchase_orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
 --
 -- AUTO_INCREMENT for table `sales_orders`
 --
 ALTER TABLE `sales_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
   MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
