@@ -50,6 +50,7 @@ foreach($result as $row)
 	$sub_array[] = $row['order_date'];
 	$sub_array[] = $row['delivery_date'];
 	$sub_array[] = $row['supplier'];
+	$sub_array[] = '<a href="#" supplier="'. $row["supplier"] .'" orig="'. $row["original_quantity"] .'" data="'. $row["data"] .'" class="button delivery_report">Show</a>';
 	$data[] = $sub_array;
 }
 $output = array(

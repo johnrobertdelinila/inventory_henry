@@ -62,6 +62,84 @@
 			white-space: nowrap; 
 			overflow: hidden;
 		}
+
+		#invoice-POS{
+		box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+		padding:2mm;
+		margin: 0 auto;
+		width: 154mm;
+		background: #FFF;
+		
+		h1{
+		font-size: 1.5em;
+		color: #222;
+		}
+		h2{font-size: .9em;}
+		h3{
+		font-size: 1.2em;
+		font-weight: 300;
+		line-height: 2em;
+		}
+		p{
+		font-size: .7em;
+		color: #666;
+		line-height: 1.2em;
+		}
+		
+		#top, #mid,#bot{ /* Targets all id with 'col-' */
+		border-bottom: 1px solid #EEE;
+		}
+
+		#top{min-height: 100px;}
+		#mid{min-height: 80px;} 
+		#bot{ min-height: 50px;}
+
+		#top .logo{
+		float: left;
+			height: 60px;
+			width: 60px;
+			background: url(http://michaeltruong.ca/images/logo1.png) no-repeat;
+			background-size: 60px 60px;
+		}
+		.clientlogo{
+		float: left;
+			height: 60px;
+			width: 60px;
+			background: url(http://michaeltruong.ca/images/client.jpg) no-repeat;
+			background-size: 60px 60px;
+		border-radius: 50px;
+		}
+		.info{
+		display: block;
+		float:left;
+		margin-left: 0;
+		}
+		.title{
+		float: right;
+		}
+		.title p{text-align: right;} 
+		table{
+		width: 100%;
+		border-collapse: collapse;
+		}
+		td{
+		padding: 5px 0 5px 15px;
+		border: 1px solid #EEE
+		}
+		.tabletitle{
+		padding: 5px;
+		font-size: .5em;
+		background: #EEE;
+		}
+		.service{border-bottom: 1px solid #EEE;}
+		.item{width: 24mm;}
+		.itemtext{font-size: .5em;}
+
+		#legalcopy{
+		margin-top: 5mm;
+		}
+
+		}
 	</style>
 </head>
 <body>
@@ -101,7 +179,7 @@
 						<th>Order Date</th>
 						<th>Delivery Date</th>
 						<th>Supplier</th>
-						
+						<th>Delivery Report</th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -157,6 +235,56 @@
 		<div class="modal-footer">
 			<a class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
 			<a class="modal-action waves-effect waves-purple btn-flat" id="next_button">Next</a>
+		</div>
+	</div>
+
+	<div id="dr_modal" class="modal modal-fixed-footer">
+		<div class="modal-content">
+			<h4 style="font-family: Avenir;">Delivery Report</h4>
+			<form>
+				<div class="container">
+
+				<div id="invoice-POS">
+    
+					<center id="top">
+						<div class="logo"></div>
+					</center>
+					
+					<div id="mid">
+						<div class="info">
+							<h4>Supplier Info</h4>
+							<p id="supplier_name"></p>
+						</div>
+					</div>
+					
+					<div id="bot">
+
+									<div id="table">
+										<table>
+											<thead>
+												<tr class="tabletitle">
+													<td class="item"><h4>Item</h4></td>
+													<td class="Hours"><h4>Remaining Qty</h4></td>
+													<td class="Rate"><h4>Delivered</h4></td>
+												</tr>
+											</thead>
+											<tbody id="row_container"></tbody>
+
+										</table>
+									</div><!--End Table-->
+
+									<div id="legalcopy">
+										<p class="legal"><strong>Thank you for your business!</strong>
+										</p>
+									</div>
+
+								</div><!--End InvoiceBot-->
+				</div><!--End Invoice-->
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<a class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
 		</div>
 	</div>
 
@@ -503,6 +631,46 @@ $(document).ready(function(){
 			function(){
 				// null
 		});
+	});
+
+	$(document).on('click', '.delivery_report', (e) => {
+		const data = $(e.currentTarget).attr('data').split(",");
+		const orig = $(e.currentTarget).attr('orig').split(",");
+		const supplier = $(e.currentTarget).attr('supplier');
+		
+		const products = [];
+		
+		var orig_index = 0;
+		for(var i = 2; i < data.length; i+=3) {
+			const product = {
+				id: data[i - 2],
+				curr_stock: data[i - 1],
+				name: data[i],
+				max_stock: orig[orig_index],
+				delivered: parseInt(orig[orig_index]) - parseInt(data[i - 1])
+			}
+			products.push(product);
+			orig_index++;
+		}
+
+		$('#supplier_name').text(supplier);
+
+		var rows = '';
+		products.forEach(product => {
+			const row = '\
+				<tr class="service">\
+					<td class="tableitem"><p class="itemtext">'+ product.name +'</p></td>\
+					<td class="tableitem"><p class="itemtext">' + product.curr_stock + '</p></td>\
+					<td class="tableitem"><p class="itemtext">' + product.delivered + '</p></td>\
+				</tr>\
+			';
+			rows += row;
+		});
+
+		$('#row_container').html(rows);
+
+		$('#dr_modal').modal("open");
+
 	});
 
 });
